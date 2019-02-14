@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7918521322156D750013762B /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7918521222156D750013762B /* NotificationCenter.framework */; };
+		7918521622156D750013762B /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7918521522156D750013762B /* TodayViewController.swift */; };
+		7918521922156D750013762B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7918521722156D750013762B /* MainInterface.storyboard */; };
+		7918521D22156D750013762B /* SafeRoute Widget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7918521122156D750013762B /* SafeRoute Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		79D61AE7221326F4005140F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D61AE6221326F4005140F2 /* AppDelegate.swift */; };
 		79D61AE9221326F4005140F2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D61AE8221326F4005140F2 /* ViewController.swift */; };
 		79D61AEC221326F4005140F2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79D61AEA221326F4005140F2 /* Main.storyboard */; };
@@ -17,7 +21,36 @@
 		79D61AFF221327A0005140F2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79D61AFE221327A0005140F2 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7918521B22156D750013762B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79D61ADB221326F4005140F2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7918521022156D750013762B;
+			remoteInfo = "SafeRoute Widget";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7918522122156D750013762B /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7918521D22156D750013762B /* SafeRoute Widget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		7918521122156D750013762B /* SafeRoute Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "SafeRoute Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7918521222156D750013762B /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		7918521522156D750013762B /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		7918521822156D750013762B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		7918521A22156D750013762B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		79D61AE3221326F4005140F2 /* SafeRoute.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SafeRoute.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		79D61AE6221326F4005140F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		79D61AE8221326F4005140F2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -31,6 +64,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7918520E22156D750013762B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7918521322156D750013762B /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		79D61AE0221326F4005140F2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -43,10 +84,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7918521422156D750013762B /* SafeRoute Widget */ = {
+			isa = PBXGroup;
+			children = (
+				7918521522156D750013762B /* TodayViewController.swift */,
+				7918521722156D750013762B /* MainInterface.storyboard */,
+				7918521A22156D750013762B /* Info.plist */,
+			);
+			path = "SafeRoute Widget";
+			sourceTree = "<group>";
+		};
 		79D61ADA221326F4005140F2 = {
 			isa = PBXGroup;
 			children = (
 				79D61AE5221326F4005140F2 /* SafeRoute */,
+				7918521422156D750013762B /* SafeRoute Widget */,
 				79D61AE4221326F4005140F2 /* Products */,
 				79D61AFB22132799005140F2 /* Frameworks */,
 			);
@@ -56,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				79D61AE3221326F4005140F2 /* SafeRoute.app */,
+				7918521122156D750013762B /* SafeRoute Widget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -79,6 +132,7 @@
 			children = (
 				79D61AFE221327A0005140F2 /* MapKit.framework */,
 				79D61AFC22132799005140F2 /* CoreLocation.framework */,
+				7918521222156D750013762B /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -86,6 +140,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7918521022156D750013762B /* SafeRoute Widget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7918522022156D750013762B /* Build configuration list for PBXNativeTarget "SafeRoute Widget" */;
+			buildPhases = (
+				7918520D22156D750013762B /* Sources */,
+				7918520E22156D750013762B /* Frameworks */,
+				7918520F22156D750013762B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SafeRoute Widget";
+			productName = "SafeRoute Widget";
+			productReference = 7918521122156D750013762B /* SafeRoute Widget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		79D61AE2221326F4005140F2 /* SafeRoute */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 79D61AF8221326F5005140F2 /* Build configuration list for PBXNativeTarget "SafeRoute" */;
@@ -93,10 +164,12 @@
 				79D61ADF221326F4005140F2 /* Sources */,
 				79D61AE0221326F4005140F2 /* Frameworks */,
 				79D61AE1221326F4005140F2 /* Resources */,
+				7918522122156D750013762B /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7918521C22156D750013762B /* PBXTargetDependency */,
 			);
 			name = SafeRoute;
 			productName = SafeRoute;
@@ -113,6 +186,9 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Pujan Tandukar";
 				TargetAttributes = {
+					7918521022156D750013762B = {
+						CreatedOnToolsVersion = 10.1;
+					};
 					79D61AE2221326F4005140F2 = {
 						CreatedOnToolsVersion = 10.1;
 					};
@@ -132,11 +208,20 @@
 			projectRoot = "";
 			targets = (
 				79D61AE2221326F4005140F2 /* SafeRoute */,
+				7918521022156D750013762B /* SafeRoute Widget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7918520F22156D750013762B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7918521922156D750013762B /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		79D61AE1221326F4005140F2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -150,6 +235,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		7918520D22156D750013762B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7918521622156D750013762B /* TodayViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		79D61ADF221326F4005140F2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -162,7 +255,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		7918521C22156D750013762B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7918521022156D750013762B /* SafeRoute Widget */;
+			targetProxy = 7918521B22156D750013762B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		7918521722156D750013762B /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7918521822156D750013762B /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		79D61AEA221326F4005140F2 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -182,6 +291,44 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		7918521E22156D750013762B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3GA37W523F;
+				INFOPLIST_FILE = "SafeRoute Widget/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "pujantandukar.SafeRoute.SafeRoute-Widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7918521F22156D750013762B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3GA37W523F;
+				INFOPLIST_FILE = "SafeRoute Widget/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "pujantandukar.SafeRoute.SafeRoute-Widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		79D61AF6221326F5005140F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -301,6 +448,7 @@
 		79D61AF9221326F5005140F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3GA37W523F;
@@ -319,6 +467,7 @@
 		79D61AFA221326F5005140F2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3GA37W523F;
@@ -337,6 +486,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7918522022156D750013762B /* Build configuration list for PBXNativeTarget "SafeRoute Widget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7918521E22156D750013762B /* Debug */,
+				7918521F22156D750013762B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		79D61ADE221326F4005140F2 /* Build configuration list for PBXProject "SafeRoute" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

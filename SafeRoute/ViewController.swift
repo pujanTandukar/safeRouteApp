@@ -15,6 +15,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var mapview: MKMapView!
     var locationManager = CLLocationManager()
 
+    @IBAction func newButton(_ sender: UIButton) {
+        print("hello")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -41,6 +44,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 //        self.mapview.region = currentRegion
         self.mapview.setRegion(currentRegion, animated: true)
     }
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Unable to access location")
     }
