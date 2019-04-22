@@ -10,7 +10,15 @@ import UIKit
 import NotificationCenter
 
 class TodayViewController: UIViewController, NCWidgetProviding {
-        
+    
+    @IBAction func alertButton(_ sender: Any) {
+        print("Alert")
+    }
+    
+    @IBAction func callButton(_ sender: Any) {
+        print("Call")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view from its nib.
