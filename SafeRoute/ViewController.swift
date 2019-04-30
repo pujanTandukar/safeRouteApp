@@ -16,11 +16,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 
     @IBOutlet weak var mapview: MKMapView!
     var locationManager = CLLocationManager()
-    
-    var alertCord = [alertCoordinates]()
 
+    var allAlertCords = [newAlertCords]()
+    
     class AddCoordinates: NSObject,MKAnnotation{
-        var coordinate = CLLocationCoordinate2D(latitude: 40.001230108641096, longitude: -105.26926145898669)
+        var coordinate = CLLocationCoordinate2D(latitude: 40.04175206650052, longitude: -105.25711876350013)
 //        var title: String? = "Hi Pujan"
     }
     
@@ -48,11 +48,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.clear
-        // Do any additional setup after loading the view, typically from a nib.
         
+        // Do any additional setup after loading the view, typically from a nib.
 //        addCircleOver(radius: 100)
         // Adding a circle any disturbances
-        mapview.addAnnotation(AddCoordinates())
+//        mapview.addAnnotation(AddCoordinates())
 //        UserDefaults.init(suitName: "group.pujantandukar.widget")
 //        UserDefaults.init(suiteName: "group.pujantandukar.widget")?.set(alertUsers(), forKey: alertUsers)
         
@@ -61,22 +61,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         databaseRef = Database.database().reference()
         databaseRef?.observe(.childAdded, with: {(snapshot) in
             let post = snapshot.value as! NSDictionary
-//            let post = snapshot.value as! [String : AnyObject]
-//            let object = meroCords()
-//            object.setValuesForKeys(post)
-//            meroCord.append(object)
-            print(post)
-//            for i in post{
-//
-//            }
-            let longitude = post["longitude"]
-            let latitude = post["latitude"]
-            print(longitude as Any, latitude as Any)
-//            for i in post{
-//                print(i)
-//            }
+
+            let longitude = post["longitude"] as! Double
+            let latitude = post["latitude"] as! Double
+            let newAlert = newAlertCords(latitude: latitude, longitude: longitude)
+            self.allAlertCords.append(newAlert)
+            print("NEW ALERT",self.allAlertCords)
         })
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -87,8 +78,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     // Function that add a bottom sheet view - CHILD VIEW
     func addBottomSheetView() {
         // 1- Init drawerView
-//        let drawerView = DrawerViewController()
-//        let drawerView = TableViewModalController()
         let drawerView = ModalViewController()
 
         // 2- Add drawerView as a child view

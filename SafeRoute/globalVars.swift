@@ -26,8 +26,8 @@ class meroCords: NSObject {
     var longitude: AnyObject!
 }
 
-struct mineCords{
-    var lat: Double
-    var long: Double
+struct newAlertCords{
+    var latitude: Double
+    var longitude: Double
 }
 

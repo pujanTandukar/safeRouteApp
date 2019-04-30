@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseDatabase
+import FirebaseAuth
 
 class ModalViewController: UIViewController {
     
@@ -22,6 +23,7 @@ class ModalViewController: UIViewController {
     
     @IBAction func button2(_ sender: Any) {
         print("Stop tracking my location.")
+        print(controller.allAlertCords)
     }
     
     @IBAction func button3(_ sender: Any) {
@@ -42,8 +44,15 @@ class ModalViewController: UIViewController {
     
     @IBAction func button5(_ sender: Any) {
         print("Edit emergency contact.")
-        let vc = SignUpViewController()
-        self.present(vc, animated: true, completion: nil)
+        
+        if Auth.auth().currentUser != nil {
+            let vc = UpdateEmergencyContact()
+            self.present(vc, animated: true, completion: nil)
+        }
+        else{
+            let vc = LogInControllerViewController()
+            self.present(vc, animated: true, completion: nil)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -78,7 +87,7 @@ class ModalViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         // Animating the bottom sheet appearance
         UIView.animate(withDuration: 0.3) { [weak self] in
             let frame = self?.view.frame
@@ -119,7 +128,7 @@ class ModalViewController: UIViewController {
             
             UIView.animate(withDuration: duration, delay: 0.0, options: [.allowUserInteraction], animations: {
                 if  velocity.y >= 0 {
-                    self.view.frame = CGRect(x: 0, y: self.partialView - 80, width: self.view.frame.width, height: self.view.frame.height)
+                    self.view.frame = CGRect(x: 0, y: self.partialView - 60, width: self.view.frame.width, height: self.view.frame.height)
                     self.swipeLabel.text = "Swipe up to start!"
                 } else {
                     self.view.frame = CGRect(x: 0, y: self.fullView, width: self.view.frame.width, height: self.view.frame.height)
