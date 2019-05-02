@@ -24,6 +24,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             self.present(alertController, animated: true, completion: nil)
         }
         else{
+            // Creating a new user in firebase
             Auth.auth().createUser(withEmail: emailField.text!, password: passwordField.text!){ (user, error) in
                 if error == nil {
                     let vc = UpdateEmergencyContact()

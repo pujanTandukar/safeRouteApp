@@ -17,7 +17,7 @@ class LogInControllerViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var signupButtonStyle: UIButton!
     
     @IBAction func loginButton(_ sender: Any) {
-        
+        // Login with email using firebase
         Auth.auth().signIn(withEmail: emailField.text!, password: passwordField.text!) { (user, error) in
             if error == nil{
                 let vc = UpdateEmergencyContact()
@@ -33,6 +33,7 @@ class LogInControllerViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    // Segue to another vc
     @IBAction func signupButton(_ sender: Any) {
         let vc = SignUpViewController()
         self.present(vc, animated: true, completion: nil)

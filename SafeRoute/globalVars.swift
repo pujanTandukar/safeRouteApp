@@ -14,6 +14,7 @@ struct globalVar {
     static var currentLat = 0.0
     static var currentUserContactNumber = "7202858641"
     static var currentUserContactName = "Pujan Tandukar"
+    static var locationBooleanGlobal = false
 }
 
 struct alertCoordinates {

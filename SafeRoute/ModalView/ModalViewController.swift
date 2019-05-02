@@ -16,31 +16,43 @@ class ModalViewController: UIViewController,  CLLocationManagerDelegate{
     var locationManager = CLLocationManager()
     
     @IBOutlet var swipeLabel: UILabel!
+    
+    // Start tracking location
     @IBAction func button1(_ sender: UIButton) {
         print("Start tracking my location.")
     }
     
+    // Stop tracking location
     @IBAction func button2(_ sender: Any) {
         print("Stop tracking my location.")
-//        controller.updateAllAlerts()
     }
     
+    // Send current location to firebase then alerts all other users
     @IBAction func button3(_ sender: Any) {
         print("Alert nearby users.")
         
-        let alert = UIAlertController(title: "Alerting nearby people.", message: "This will alert nearby users that you are under threat.", preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Alert", style: .default, handler: {action in
-            self.controller.alertUsers()
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        self.present(alert, animated: true)
+        if(globalVar.locationBooleanGlobal == false){
+            let alert = UIAlertController(title: "Cannot Access Current Location.", message: "Please start tracking your location before alerting other users.", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
+            self.present(alert, animated: true)
+        }
+        else{
+            let alert = UIAlertController(title: "Alerting nearby people.", message: "This will alert nearby users that you are under threat.", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Alert", style: .default, handler: {action in
+                self.controller.alertUsers()
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            self.present(alert, animated: true)
+        }
     }
     
+    // Calls your emergency contact
     @IBAction func button4(_ sender: Any) {
         print("Alert emergency contact.", globalVar.currentUserContactNumber)
         callNumber(phoneNumber: globalVar.currentUserContactNumber)
     }
     
+    // Segue to a different screen to update contact information
     @IBAction func button5(_ sender: Any) {
         print("Edit emergency contact.")
         
@@ -70,6 +82,7 @@ class ModalViewController: UIViewController,  CLLocationManagerDelegate{
         }
     }
     
+    // Customizatoin of this (child) view
     let fullView: CGFloat = 100
     var partialView: CGFloat {
         return UIScreen.main.bounds.height - (UIApplication.shared.statusBarFrame.height)

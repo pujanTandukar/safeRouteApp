@@ -16,11 +16,22 @@ class UpdateEmergencyContact: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var currentContactName: UILabel!
     @IBOutlet weak var currentContactNumber: UILabel!
     
+    @IBOutlet weak var logoutButtonStyle: UIButton!
+    @IBOutlet weak var homeButtonStyle: UIButton!
+    @IBOutlet weak var updateButtonStyle: UIButton!
+    
+    @IBAction func homeButton(_ sender: Any) {
+        let vc = ModalViewController()
+        self.present(vc, animated: true, completion: nil)
+    }
+    
     @IBAction func updateContactButton(_ sender: Any) {
         
+        // getting user ID from firebase
         let userId = Auth.auth().currentUser?.uid
         print("CURRENT USER ID ", userId as Any)
         
+        // using the ID to create an unique reference for each user to update the contact information
         let ref = Database.database().reference().child("Users").child(userId!)
         if(contactNumber.text == "" || contactName.text == ""){
             let alertController = UIAlertController(title: "Error", message: "Please fill out both name and number fields.", preferredStyle: .alert)
@@ -31,8 +42,12 @@ class UpdateEmergencyContact: UIViewController, UITextFieldDelegate {
         else{
             ref.child("Contact Info").setValue(["name": contactName.text, "number": contactNumber.text])
         }
+        
+        loadFromFirebase()
     }
+    
     @IBAction func returnToHome(_ sender: Any) {
+        // sign out
         do {
             try Auth.auth().signOut()
         }
@@ -51,15 +66,17 @@ class UpdateEmergencyContact: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        let navController = UINavigationController(rootViewController: UpdateEmergencyContact)
-        
+    
         // Textfield Delegate
         self.contactName.delegate = self
+        loadFromFirebase()
         
-//        self.currentContactName.text = globalVar.currentUserContactName
-//        self.currentContactNumber.text = globalVar.currentUserContactNumber
-        
+        logoutButtonStyle.layer.cornerRadius = 5
+        homeButtonStyle.layer.cornerRadius = 5
+        updateButtonStyle.layer.cornerRadius = 5
+    }
+    
+    func loadFromFirebase(){
         // FIREBASE
         let currentUser = Auth.auth().currentUser?.uid
         var databaseRef:DatabaseReference?
@@ -70,7 +87,7 @@ class UpdateEmergencyContact: UIViewController, UITextFieldDelegate {
             let number = contactInfo["number"] as! String
             self.currentContactName.text = name
             self.currentContactNumber.text = number
-
+            
             print("contactInfo", contactInfo as Any)
             print("NAME", name)
             print("NUMBER", number)

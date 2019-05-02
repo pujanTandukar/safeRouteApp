@@ -16,12 +16,39 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     // Mapview
     @IBOutlet weak var mapview: MKMapView!
     
-    var boolUpdate = false
+    // Boolean for location tracking
+    var locationBoolean = false
     
-    @IBAction func lolbutton(_ sender: Any) {
-        updateAllAlerts()
+    // Start Tracking Location
+    @IBAction func trackButton(_ sender: Any) {
+        if(self.locationBoolean == false){
+            let alertController = UIAlertController(title: "Start Tracking Your Location?", message: "SafeRoute will now start tracking your location.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Okay", style: .default, handler: {action in
+                self.locationBoolean = true
+                globalVar.locationBooleanGlobal = true
+                self.startUpdatingLocation()
+            }))
+            alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            self.present(alertController, animated: true)
+        }
+        else{
+            let alertController = UIAlertController(title: "Already Tracking Your Location.", message: "SafeRoute is already tracking your location.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
+            self.present(alertController, animated: true)
+        }
     }
     
+    // Updates the map with all alerts
+    @IBAction func lolbutton(_ sender: Any) {
+        let alertController = UIAlertController(title: "Showing all alerts", message: "SafeRoute will show you a pin at every alert posted by users.", preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: {action in
+            self.updateAllAlerts()
+        })
+        alertController.addAction(defaultAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    // Adds a pin/annotation to every alert coordinates
     func updateAllAlerts(){
         for i in 0...allAlertCords.count-1{
             let annotation = MKPointAnnotation()
@@ -50,25 +77,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     // FUNCTION: If the location services is enabled, the device starts updating location.
     func startUpdatingLocation(){
         // Determining the User location
-        if(boolUpdate == true){
-            mapview.showsUserLocation = true
-            if CLLocationManager.locationServicesEnabled() == true {
-                if CLLocationManager.authorizationStatus() == .restricted ||
-                    CLLocationManager.authorizationStatus() == .denied ||
-                    CLLocationManager.authorizationStatus() == .notDetermined {
-                    locationManager.requestWhenInUseAuthorization()
-                }
-                locationManager.desiredAccuracy = 1.0
-                locationManager.delegate = self
-                locationManager.startUpdatingLocation()
-            } else {
-                print("Please turn on location services")
+        mapview.showsUserLocation = true
+        if CLLocationManager.locationServicesEnabled() == true {
+            if CLLocationManager.authorizationStatus() == .restricted ||
+                CLLocationManager.authorizationStatus() == .denied ||
+                CLLocationManager.authorizationStatus() == .notDetermined {
+                locationManager.requestWhenInUseAuthorization()
             }
+            locationManager.desiredAccuracy = 1.0
+            locationManager.delegate = self
+            locationManager.startUpdatingLocation()
+        } else {
+            print("Please turn on location services")
         }
     }
     
-    
-    
+    // Draw an overlay on the map
     func showCircle(coordinate: CLLocationCoordinate2D, radius: CLLocationDistance) {
         let circle = MKCircle(center: coordinate, radius: radius)
         mapview.addOverlay(circle)
@@ -78,8 +102,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.clear
         mapview.delegate = self
-        
-        startUpdatingLocation()
         
         // Get current emergency contact info for authenticated/non authenticated users
         if Auth.auth().currentUser != nil {
@@ -120,9 +142,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidLoad()
         super.viewDidAppear(animated)
         // Adding the child view to this parent.
         addBottomSheetView()
+        
+        // Connecting App to Widget
 //        let sharedUserDefaults = UserDefaults(suiteName: "pujantandukar.SafeRoute")
 //        if sharedUserDefaults.bool(forKey: "alertingPeople") {
 //            alertUsers()
@@ -170,6 +195,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
 }
 
+// Renders a red circle as an overlay if called by the map
 extension ViewController:  MKMapViewDelegate {
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let circleRenderer = MKCircleRenderer(circle: MKCircle.init())

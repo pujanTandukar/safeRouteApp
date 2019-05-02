@@ -21,11 +21,18 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="YaV-bv-KIC">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kQ6-au-Jaf">
-                                <rect key="frame" x="251" y="34" width="89" height="96"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.24184086869999999" green="1" blue="0.32218933630000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="lol"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dud-v4-NF3">
+                                <rect key="frame" x="319" y="44" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="Track"/>
+                                <connections>
+                                    <action selector="trackButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ul5-wm-4Dg"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kQ6-au-Jaf">
+                                <rect key="frame" x="319" y="107" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="AlertIcon"/>
                                 <connections>
                                     <action selector="lolbutton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="e6S-Bd-dkI"/>
                                 </connections>
@@ -49,4 +56,8 @@
             <point key="canvasLocation" x="2621.5999999999999" y="133.5832083958021"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="AlertIcon" width="2084" height="2083.5"/>
+        <image name="Track" width="2084" height="2083.5"/>
+    </resources>
 </document>
