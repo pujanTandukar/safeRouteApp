@@ -18,14 +18,14 @@ class ModalViewController: UIViewController,  CLLocationManagerDelegate{
     @IBOutlet var swipeLabel: UILabel!
     
     // Start tracking location
-    @IBAction func button1(_ sender: UIButton) {
-        print("Start tracking my location.")
-    }
-    
-    // Stop tracking location
-    @IBAction func button2(_ sender: Any) {
-        print("Stop tracking my location.")
-    }
+//    @IBAction func button1(_ sender: UIButton) {
+//        print("Start tracking my location.")
+//    }
+//    
+//    // Stop tracking location
+//    @IBAction func button2(_ sender: Any) {
+//        print("Stop tracking my location.")
+//    }
     
     // Send current location to firebase then alerts all other users
     @IBAction func button3(_ sender: Any) {
@@ -103,7 +103,7 @@ class ModalViewController: UIViewController,  CLLocationManagerDelegate{
         // Animating the bottom sheet appearance
         UIView.animate(withDuration: 0.3) { [weak self] in
             let frame = self?.view.frame
-            let yComponent = UIScreen.main.bounds.height - 110
+            let yComponent = UIScreen.main.bounds.height - 140
             self?.view.frame = CGRect(x: 0, y: yComponent, width: frame!.width, height: frame!.height)
         }
     }
@@ -140,7 +140,7 @@ class ModalViewController: UIViewController,  CLLocationManagerDelegate{
             
             UIView.animate(withDuration: duration, delay: 0.0, options: [.allowUserInteraction], animations: {
                 if  velocity.y >= 0 {
-                    self.view.frame = CGRect(x: 0, y: self.partialView - 60, width: self.view.frame.width, height: self.view.frame.height)
+                    self.view.frame = CGRect(x: 0, y: self.partialView - 120, width: self.view.frame.width, height: self.view.frame.height)
                     self.swipeLabel.text = "Swipe up to start!"
                 } else {
                     self.view.frame = CGRect(x: 0, y: self.fullView, width: self.view.frame.width, height: self.view.frame.height)
