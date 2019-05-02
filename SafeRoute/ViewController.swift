@@ -9,82 +9,136 @@
 import UIKit
 import MapKit
 import CoreLocation
-import FirebaseDatabase
 import Firebase
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
 
+    // Mapview
     @IBOutlet weak var mapview: MKMapView!
+    
+    var boolUpdate = false
+    
+    @IBAction func lolbutton(_ sender: Any) {
+        updateAllAlerts()
+    }
+    
+    func updateAllAlerts(){
+        for i in 0...allAlertCords.count-1{
+            let annotation = MKPointAnnotation()
+            print(allAlertCords[i].longitude, allAlertCords[i].latitude)
+            annotation.coordinate = CLLocationCoordinate2D(latitude: allAlertCords[i].latitude, longitude: allAlertCords[i].longitude)
+            annotation.title = "Alert"
+            annotation.subtitle = "Alert"
+            mapview.addAnnotation(annotation)
+            print("Annotation added")
+            showCircle(coordinate: CLLocationCoordinate2D(latitude: allAlertCords[i].latitude, longitude: allAlertCords[i].longitude), radius: 1000)
+        }
+    }
+    
+    // Location Manager for Mapview
     var locationManager = CLLocationManager()
-
+    
+    // All alert cordinates
     var allAlertCords = [newAlertCords]()
     
+    // Adds a pin to a specific location
     class AddCoordinates: NSObject,MKAnnotation{
         var coordinate = CLLocationCoordinate2D(latitude: 40.04175206650052, longitude: -105.25711876350013)
-//        var title: String? = "Hi Pujan"
+        var title: String? = "Hi Pujan"
     }
     
-    @IBAction func button(_ sender: Any) {
-        startUpdatingLocation()
-    }
-    
+    // FUNCTION: If the location services is enabled, the device starts updating location.
     func startUpdatingLocation(){
         // Determining the User location
-        mapview.showsUserLocation = true
-        if CLLocationManager.locationServicesEnabled() == true {
-            if CLLocationManager.authorizationStatus() == .restricted ||
-                CLLocationManager.authorizationStatus() == .denied ||
-                CLLocationManager.authorizationStatus() == .notDetermined {
-                locationManager.requestWhenInUseAuthorization()
+        if(boolUpdate == true){
+            mapview.showsUserLocation = true
+            if CLLocationManager.locationServicesEnabled() == true {
+                if CLLocationManager.authorizationStatus() == .restricted ||
+                    CLLocationManager.authorizationStatus() == .denied ||
+                    CLLocationManager.authorizationStatus() == .notDetermined {
+                    locationManager.requestWhenInUseAuthorization()
+                }
+                locationManager.desiredAccuracy = 1.0
+                locationManager.delegate = self
+                locationManager.startUpdatingLocation()
+            } else {
+                print("Please turn on location services")
             }
-            locationManager.desiredAccuracy = 1.0
-            locationManager.delegate = self
-            locationManager.startUpdatingLocation()
-        } else {
-            print("Please turn on location services")
         }
+    }
+    
+    
+    
+    func showCircle(coordinate: CLLocationCoordinate2D, radius: CLLocationDistance) {
+        let circle = MKCircle(center: coordinate, radius: radius)
+        mapview.addOverlay(circle)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.clear
+        mapview.delegate = self
         
-        // Do any additional setup after loading the view, typically from a nib.
-//        addCircleOver(radius: 100)
-        // Adding a circle any disturbances
-//        mapview.addAnnotation(AddCoordinates())
-//        UserDefaults.init(suitName: "group.pujantandukar.widget")
-//        UserDefaults.init(suiteName: "group.pujantandukar.widget")?.set(alertUsers(), forKey: alertUsers)
+        startUpdatingLocation()
         
+        // Get current emergency contact info for authenticated/non authenticated users
+        if Auth.auth().currentUser != nil {
+            let currentUser = Auth.auth().currentUser?.uid
+            var databaseRefForContact:DatabaseReference?
+            databaseRefForContact = Database.database().reference().child("Users").child(currentUser!)
+            databaseRefForContact?.observe(.childAdded, with: {(snapshot) in
+                let contactInfo = snapshot.value as AnyObject
+                let name = contactInfo["name"] as! String
+                let number = contactInfo["number"] as! String
+                print("contactInfo", contactInfo as Any)
+                print("NAME", name)
+                print("NUMBER", number)
+                
+                globalVar.currentUserContactNumber = number
+                globalVar.currentUserContactName = name
+            })
+        }
+        else{
+            globalVar.currentUserContactNumber = "7202858641"
+            globalVar.currentUserContactName = "Pujan Tandukar"
+        }
+        
+        // READING FIREBASE for all alert data
         var databaseRef:DatabaseReference?
-        
-        databaseRef = Database.database().reference()
+        databaseRef = Database.database().reference().child("Alerts")
         databaseRef?.observe(.childAdded, with: {(snapshot) in
+            // Reading the object as a dictionary
             let post = snapshot.value as! NSDictionary
-
             let longitude = post["longitude"] as! Double
             let latitude = post["latitude"] as! Double
             let newAlert = newAlertCords(latitude: latitude, longitude: longitude)
+            // Adding new alert to the array
             self.allAlertCords.append(newAlert)
             print("NEW ALERT",self.allAlertCords)
+            print("Location",self.allAlertCords[0].longitude)
         })
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // Adding the child view to this parent.
         addBottomSheetView()
+//        let sharedUserDefaults = UserDefaults(suiteName: "pujantandukar.SafeRoute")
+//        if sharedUserDefaults.bool(forKey: "alertingPeople") {
+//            alertUsers()
+//        }
+//        sharedUserDefaults.removeObject(forKey: "alertingPeople")
+//        sharedUserDefaults.synchronize()
     }
     
     // Function that add a bottom sheet view - CHILD VIEW
     func addBottomSheetView() {
         // 1- Init drawerView
         let drawerView = ModalViewController()
-
         // 2- Add drawerView as a child view
         self.addChild(drawerView)
         self.view.addSubview(drawerView.view)
         drawerView.didMove(toParent: self)
-
         // 3- Adjust bottomSheet frame and initial position.
         let height = view.frame.height
         let width  = view.frame.width
@@ -93,76 +147,34 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     // CLLocationManager Delegates
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        // Finding the current location and setting it in mapview
         let currentRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: locations[0].coordinate.latitude, longitude: locations[0].coordinate.longitude), span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03))
         self.mapview.setRegion(currentRegion, animated: true)
         
+        // Finding current location
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         globalVar.currentLat = locValue.latitude
         globalVar.currentLong = locValue.longitude
-//        currentLat = locValue.latitude
-//        currentLong = locValue.longitude
         print("locations = \(globalVar.currentLat) \(globalVar.currentLong)")
     }
     
+    // Location manager failed to find location
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Unable to access location")
     }
     
     // Button that uses to push location to firebase - ALERT FOR ANY DISTRUBANCES
     func alertUsers(){
-        let date = Date()
-        let calendar = Calendar.current
-        let day = calendar.component(.day, from: date)
-        let month = calendar.component(.month, from: date)
-        
         let ref = Database.database().reference()
-//        ref.childByAutoId().setValue(["longitude":globalVar.currentLong, "latitude":globalVar.currentLat, "day": day, "month": month ])
-        ref.childByAutoId().setValue(["longitude":globalVar.currentLong, "latitude":globalVar.currentLat])
-    }
-    
-    // Function that adds circle overlay to the map
-//    func addCircleOver(radius:CLLocationDistance){
-//        let center = CLLocationCoordinate2D(latitude: 40.0150, longitude: 105.2705)
-//        let circle = MKCircle(center: center, radius: radius)
-////        mapView.addOverlay(circle)
-//        mapview.addOverlay(circle)
-//    }
-//
-//    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
-//        if overlay.isKind(of: MKCircle.self){
-//            let circleRenderer = MKCircleRenderer(overlay: overlay)
-//            circleRenderer.fillColor = UIColor.blue.withAlphaComponent(0.1)
-//            circleRenderer.strokeColor = UIColor.blue
-//            circleRenderer.lineWidth = 1
-//            return circleRenderer
-//        }
-//        return MKOverlayRenderer(overlay: overlay)
-//    }
-    
-    func addRegion(_ sender: Any) {
-        print("addregion pressed")
-        guard let longPress = sender as? UILongPressGestureRecognizer else {return}
-        
-        let touchLocation = longPress.location(in: mapview)
-        let coordinates = mapview.convert(touchLocation, toCoordinateFrom: mapview)
-        let region = CLCircularRegion(center: coordinates, radius: 5000, identifier: "geofence")
-        mapview.removeOverlays(mapview.overlays)
-        locationManager.startMonitoring(for: region)
-        let circle = MKCircle(center: coordinates, radius: region.radius)
-        mapview.addOverlay(circle)
-        
+        ref.child("Alerts").childByAutoId().setValue(["longitude":globalVar.currentLong, "latitude":globalVar.currentLat])
     }
 }
 
-extension ViewController: MKMapViewDelegate {
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        guard let circelOverLay = overlay as? MKCircle else {return MKOverlayRenderer()}
-        
-        let circleRenderer = MKCircleRenderer(circle: circelOverLay)
-        circleRenderer.strokeColor = .blue
-        circleRenderer.fillColor = .blue
-        circleRenderer.alpha = 0.2
+extension ViewController:  MKMapViewDelegate {
+    public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let circleRenderer = MKCircleRenderer(circle: MKCircle.init())
+        circleRenderer.fillColor = UIColor.red
+        circleRenderer.alpha = 0.1
         return circleRenderer
     }
 }
-

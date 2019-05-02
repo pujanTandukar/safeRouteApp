@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -26,14 +26,8 @@ class SignUpViewController: UIViewController {
         else{
             Auth.auth().createUser(withEmail: emailField.text!, password: passwordField.text!){ (user, error) in
                 if error == nil {
-                    // create the alert
-                    let alert = UIAlertController(title: "SUCCESS", message: "You have just created an accoiunt.", preferredStyle: UIAlertController.Style.alert)
-                    
-                    // add an action (button)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                    
-                    // show the alert
-                    self.present(alert, animated: true, completion: nil)
+                    let vc = UpdateEmergencyContact()
+                    self.present(vc, animated: true, completion: nil)
                 }
                 else{
                     let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
@@ -48,9 +42,16 @@ class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .white
-        // Do any additional setup after loading the view.
+        
+        self.emailField.delegate = self
+        self.passwordField.delegate = self
+        self.confirmPasswordField.delegate = self
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
 }

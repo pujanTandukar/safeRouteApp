@@ -7,15 +7,30 @@
 //
 
 import UIKit
+import Firebase
 
-class LogInControllerViewController: UIViewController {
+class LogInControllerViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var loginButtonStle: UIButton!
+    @IBOutlet weak var signupButtonStyle: UIButton!
     
     @IBAction func loginButton(_ sender: Any) {
-        let vc = UpdateEmergencyContact()
-        self.present(vc, animated: true, completion: nil)
+        
+        Auth.auth().signIn(withEmail: emailField.text!, password: passwordField.text!) { (user, error) in
+            if error == nil{
+                let vc = UpdateEmergencyContact()
+                self.present(vc, animated: true, completion: nil)
+            }
+            else{
+                let alertController = UIAlertController(title: "Please Try Again.", message: "The email and password combination is not valid.", preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
+        }
     }
     
     @IBAction func signupButton(_ sender: Any) {
@@ -25,19 +40,12 @@ class LogInControllerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.emailField.delegate = self
+        self.passwordField.delegate = self
     }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
-    */
-
 }

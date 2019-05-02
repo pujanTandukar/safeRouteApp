@@ -7,23 +7,22 @@
 //
 
 import UIKit
-import FirebaseDatabase
-import FirebaseAuth
+import Firebase
+import CoreLocation
 
-class ModalViewController: UIViewController {
+class ModalViewController: UIViewController,  CLLocationManagerDelegate{
     
     var controller = ViewController()
+    var locationManager = CLLocationManager()
     
     @IBOutlet var swipeLabel: UILabel!
     @IBAction func button1(_ sender: UIButton) {
         print("Start tracking my location.")
-        print(globalVar.isLocationOn)
-//        controller.startUpdatingLocation()
     }
     
     @IBAction func button2(_ sender: Any) {
         print("Stop tracking my location.")
-        print(controller.allAlertCords)
+//        controller.updateAllAlerts()
     }
     
     @IBAction func button3(_ sender: Any) {
@@ -38,8 +37,8 @@ class ModalViewController: UIViewController {
     }
     
     @IBAction func button4(_ sender: Any) {
-        print("Alert emergency contact.")
-        callNumber(phoneNumber: "7202858641")
+        print("Alert emergency contact.", globalVar.currentUserContactNumber)
+        callNumber(phoneNumber: globalVar.currentUserContactNumber)
     }
     
     @IBAction func button5(_ sender: Any) {
@@ -91,7 +90,7 @@ class ModalViewController: UIViewController {
         // Animating the bottom sheet appearance
         UIView.animate(withDuration: 0.3) { [weak self] in
             let frame = self?.view.frame
-            let yComponent = UIScreen.main.bounds.height - 100
+            let yComponent = UIScreen.main.bounds.height - 110
             self?.view.frame = CGRect(x: 0, y: yComponent, width: frame!.width, height: frame!.height)
         }
     }

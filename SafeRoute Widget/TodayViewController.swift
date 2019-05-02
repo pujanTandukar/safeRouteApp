@@ -8,29 +8,28 @@
 
 import UIKit
 import NotificationCenter
+import CoreLocation
 
-class TodayViewController: UIViewController, NCWidgetProviding {
+class TodayViewController: UIViewController, NCWidgetProviding, CLLocationManagerDelegate {
     
+    var locationManager =  CLLocationManager()
     @IBAction func alertButton(_ sender: Any) {
         print("Alert")
+        let sharedUserDefaults = UserDefaults(suiteName: "pujantandukar.SafeRoute")!
+        sharedUserDefaults.set(true, forKey: "alertingPeople")
+        sharedUserDefaults.synchronize()
     }
     
     @IBAction func callButton(_ sender: Any) {
         print("Call")
+//        callNumber(phoneNumber: <#T##String#>)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view from its nib.
     }
         
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
-        // Perform any setup necessary in order to update the view.
-        
-        // If an error is encountered, use NCUpdateResult.Failed
-        // If there's no update required, use NCUpdateResult.NoData
-        // If there's an update, use NCUpdateResult.NewData
-        
         completionHandler(NCUpdateResult.newData)
     }
     
